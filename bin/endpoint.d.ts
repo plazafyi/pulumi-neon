@@ -117,4 +117,8 @@ export interface EndpointArgs {
      * Suspend timeout of the endpoint. **Default** `0`.
      */
     suspendTimeout?: pulumi.Input<number>;
+    /**
+     * Type of the endpoint. One of `read_write` or `read_only`.
+     */
+    type?: pulumi.Input<string>;
 }
