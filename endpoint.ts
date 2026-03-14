@@ -63,7 +63,7 @@ export class Endpoint extends pulumi.CustomResource {
     /**
      * Type of the endpoint.
      */
-    public /*out*/ readonly type!: pulumi.Output<string>;
+    public readonly type!: pulumi.Output<string>;
 
     /**
      * Create a Endpoint resource with the given unique name, arguments, and options.
@@ -99,9 +99,9 @@ export class Endpoint extends pulumi.CustomResource {
             resourceInputs["minCu"] = args ? args.minCu : undefined;
             resourceInputs["projectId"] = args ? args.projectId : undefined;
             resourceInputs["suspendTimeout"] = args ? args.suspendTimeout : undefined;
+            resourceInputs["type"] = args ? args.type : undefined;
             resourceInputs["computeProvisioner"] = undefined /*out*/;
             resourceInputs["host"] = undefined /*out*/;
-            resourceInputs["type"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Endpoint.__pulumiType, name, resourceInputs, opts, false /*dependency*/, utilities.getPackage());
@@ -170,4 +170,8 @@ export interface EndpointArgs {
      * Suspend timeout of the endpoint. **Default** `0`.
      */
     suspendTimeout?: pulumi.Input<number>;
+    /**
+     * Type of the endpoint. One of `read_write` or `read_only`.
+     */
+    type?: pulumi.Input<string>;
 }

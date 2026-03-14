@@ -55,9 +55,9 @@ class Endpoint extends pulumi.CustomResource {
             resourceInputs["minCu"] = args ? args.minCu : undefined;
             resourceInputs["projectId"] = args ? args.projectId : undefined;
             resourceInputs["suspendTimeout"] = args ? args.suspendTimeout : undefined;
+            resourceInputs["type"] = args ? args.type : undefined;
             resourceInputs["computeProvisioner"] = undefined /*out*/;
             resourceInputs["host"] = undefined /*out*/;
-            resourceInputs["type"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Endpoint.__pulumiType, name, resourceInputs, opts, false /*dependency*/, utilities.getPackage());
