@@ -8,12 +8,12 @@ declare var exports: any;
 const __config = new pulumi.Config("neon");
 
 /**
- * The token used to authenticate with Neon.
+ * API access key. Default is read from the environment variable `NEON_API_KEY`.
  */
-export declare const token: string | undefined;
-Object.defineProperty(exports, "token", {
+export declare const apiKey: string | undefined;
+Object.defineProperty(exports, "apiKey", {
     get() {
-        return __config.get("token");
+        return __config.get("apiKey");
     },
     enumerable: true,
 });

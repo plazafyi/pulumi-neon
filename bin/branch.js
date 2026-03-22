@@ -16,7 +16,7 @@ class Branch extends pulumi.CustomResource {
      * @param opts Optional settings to control the behavior of the CustomResource.
      */
     static get(name, id, state, opts) {
-        return new Branch(name, state, Object.assign(Object.assign({}, opts), { id: id }));
+        return new Branch(name, state, { ...opts, id: id });
     }
     /**
      * Returns true if the given object is an instance of Branch.  This is designed to work even
@@ -33,20 +33,26 @@ class Branch extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState;
-            resourceInputs["endpoint"] = state ? state.endpoint : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["parentId"] = state ? state.parentId : undefined;
-            resourceInputs["projectId"] = state ? state.projectId : undefined;
+            resourceInputs["logicalSize"] = state?.logicalSize;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["parentId"] = state?.parentId;
+            resourceInputs["parentLsn"] = state?.parentLsn;
+            resourceInputs["parentTimestamp"] = state?.parentTimestamp;
+            resourceInputs["projectId"] = state?.projectId;
+            resourceInputs["protected"] = state?.protected;
         }
         else {
             const args = argsOrState;
-            if ((!args || args.projectId === undefined) && !opts.urn) {
+            if (args?.projectId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'projectId'");
             }
-            resourceInputs["endpoint"] = args ? args.endpoint : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["parentId"] = args ? args.parentId : undefined;
-            resourceInputs["projectId"] = args ? args.projectId : undefined;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["parentId"] = args?.parentId;
+            resourceInputs["parentLsn"] = args?.parentLsn;
+            resourceInputs["parentTimestamp"] = args?.parentTimestamp;
+            resourceInputs["projectId"] = args?.projectId;
+            resourceInputs["protected"] = args?.protected;
+            resourceInputs["logicalSize"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Branch.__pulumiType, name, resourceInputs, opts, false /*dependency*/, utilities.getPackage());

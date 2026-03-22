@@ -2,8 +2,6 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
-import * as inputs from "./types/input";
-import * as outputs from "./types/output";
 import * as utilities from "./utilities";
 
 export class Branch extends pulumi.CustomResource {
@@ -35,21 +33,35 @@ export class Branch extends pulumi.CustomResource {
     }
 
     /**
-     * Read-write compute endpoint settings of the branch.
+     * Branch logical size in MB.
      */
-    public readonly endpoint!: pulumi.Output<outputs.BranchEndpoint | undefined>;
+    declare public /*out*/ readonly logicalSize: pulumi.Output<number>;
     /**
-     * Name of the branch.
+     * Branch name.
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
-     * ID of the parent branch. Defaults to the primary branch.
+     * ID of the branch to check out.
      */
-    public readonly parentId!: pulumi.Output<string>;
+    declare public readonly parentId: pulumi.Output<string>;
     /**
-     * Project the branch belongs to.
+     * Log Sequence Number (LSN) horizon for the data to be present in the new branch. See details:
+     * https://neon.tech/docs/reference/glossary/#lsn
      */
-    public readonly projectId!: pulumi.Output<string>;
+    declare public readonly parentLsn: pulumi.Output<string>;
+    /**
+     * Timestamp horizon for the data to be present in the new branch. **Note**: it's defined as Unix epoch.'
+     */
+    declare public readonly parentTimestamp: pulumi.Output<number>;
+    /**
+     * Project ID.
+     */
+    declare public readonly projectId: pulumi.Output<string>;
+    /**
+     * Set to 'yes' to activate, 'no' to deactivate explicitly, and omit to keep the default value. Set whether the branch is
+     * protected.
+     */
+    declare public readonly protected: pulumi.Output<string | undefined>;
 
     /**
      * Create a Branch resource with the given unique name, arguments, and options.
@@ -64,19 +76,25 @@ export class Branch extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as BranchState | undefined;
-            resourceInputs["endpoint"] = state ? state.endpoint : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["parentId"] = state ? state.parentId : undefined;
-            resourceInputs["projectId"] = state ? state.projectId : undefined;
+            resourceInputs["logicalSize"] = state?.logicalSize;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["parentId"] = state?.parentId;
+            resourceInputs["parentLsn"] = state?.parentLsn;
+            resourceInputs["parentTimestamp"] = state?.parentTimestamp;
+            resourceInputs["projectId"] = state?.projectId;
+            resourceInputs["protected"] = state?.protected;
         } else {
             const args = argsOrState as BranchArgs | undefined;
-            if ((!args || args.projectId === undefined) && !opts.urn) {
+            if (args?.projectId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'projectId'");
             }
-            resourceInputs["endpoint"] = args ? args.endpoint : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["parentId"] = args ? args.parentId : undefined;
-            resourceInputs["projectId"] = args ? args.projectId : undefined;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["parentId"] = args?.parentId;
+            resourceInputs["parentLsn"] = args?.parentLsn;
+            resourceInputs["parentTimestamp"] = args?.parentTimestamp;
+            resourceInputs["projectId"] = args?.projectId;
+            resourceInputs["protected"] = args?.protected;
+            resourceInputs["logicalSize"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Branch.__pulumiType, name, resourceInputs, opts, false /*dependency*/, utilities.getPackage());
@@ -88,21 +106,35 @@ export class Branch extends pulumi.CustomResource {
  */
 export interface BranchState {
     /**
-     * Read-write compute endpoint settings of the branch.
+     * Branch logical size in MB.
      */
-    endpoint?: pulumi.Input<inputs.BranchEndpoint>;
+    logicalSize?: pulumi.Input<number>;
     /**
-     * Name of the branch.
+     * Branch name.
      */
     name?: pulumi.Input<string>;
     /**
-     * ID of the parent branch. Defaults to the primary branch.
+     * ID of the branch to check out.
      */
     parentId?: pulumi.Input<string>;
     /**
-     * Project the branch belongs to.
+     * Log Sequence Number (LSN) horizon for the data to be present in the new branch. See details:
+     * https://neon.tech/docs/reference/glossary/#lsn
+     */
+    parentLsn?: pulumi.Input<string>;
+    /**
+     * Timestamp horizon for the data to be present in the new branch. **Note**: it's defined as Unix epoch.'
+     */
+    parentTimestamp?: pulumi.Input<number>;
+    /**
+     * Project ID.
      */
     projectId?: pulumi.Input<string>;
+    /**
+     * Set to 'yes' to activate, 'no' to deactivate explicitly, and omit to keep the default value. Set whether the branch is
+     * protected.
+     */
+    protected?: pulumi.Input<string>;
 }
 
 /**
@@ -110,19 +142,29 @@ export interface BranchState {
  */
 export interface BranchArgs {
     /**
-     * Read-write compute endpoint settings of the branch.
-     */
-    endpoint?: pulumi.Input<inputs.BranchEndpoint>;
-    /**
-     * Name of the branch.
+     * Branch name.
      */
     name?: pulumi.Input<string>;
     /**
-     * ID of the parent branch. Defaults to the primary branch.
+     * ID of the branch to check out.
      */
     parentId?: pulumi.Input<string>;
     /**
-     * Project the branch belongs to.
+     * Log Sequence Number (LSN) horizon for the data to be present in the new branch. See details:
+     * https://neon.tech/docs/reference/glossary/#lsn
+     */
+    parentLsn?: pulumi.Input<string>;
+    /**
+     * Timestamp horizon for the data to be present in the new branch. **Note**: it's defined as Unix epoch.'
+     */
+    parentTimestamp?: pulumi.Input<number>;
+    /**
+     * Project ID.
      */
     projectId: pulumi.Input<string>;
+    /**
+     * Set to 'yes' to activate, 'no' to deactivate explicitly, and omit to keep the default value. Set whether the branch is
+     * protected.
+     */
+    protected?: pulumi.Input<string>;
 }

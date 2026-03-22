@@ -33,7 +33,7 @@ class Provider extends pulumi.ProviderResource {
         let resourceInputs = {};
         opts = opts || {};
         {
-            resourceInputs["token"] = args ? args.token : undefined;
+            resourceInputs["apiKey"] = args?.apiKey;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Provider.__pulumiType, name, resourceInputs, opts, false /*dependency*/, utilities.getPackage());

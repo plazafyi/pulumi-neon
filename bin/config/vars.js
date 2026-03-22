@@ -4,9 +4,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const pulumi = require("@pulumi/pulumi");
 const __config = new pulumi.Config("neon");
-Object.defineProperty(exports, "token", {
+Object.defineProperty(exports, "apiKey", {
     get() {
-        return __config.get("token");
+        return __config.get("apiKey");
     },
     enumerable: true,
 });

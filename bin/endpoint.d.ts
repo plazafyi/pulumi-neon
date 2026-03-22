@@ -15,38 +15,55 @@ export declare class Endpoint extends pulumi.CustomResource {
      * when multiple copies of the Pulumi SDK have been loaded into the same process.
      */
     static isInstance(obj: any): obj is Endpoint;
+    readonly autoscalingLimitMaxCu: pulumi.Output<number>;
+    readonly autoscalingLimitMinCu: pulumi.Output<number>;
     /**
-     * Branch the endpoint belongs to.
+     * Branch ID.
      */
     readonly branchId: pulumi.Output<string>;
     /**
-     * Provisioner of the endpoint.
+     * Provisioner The Neon compute provisioner. Specify the k8s-neonvm provisioner to create a compute endpoint that supports
+     * Autoscaling.
      */
     readonly computeProvisioner: pulumi.Output<string>;
     /**
-     * Host of the endpoint.
+     * Disable the endpoint.
+     */
+    readonly disabled: pulumi.Output<boolean>;
+    /**
+     * Endpoint URI.
      */
     readonly host: pulumi.Output<string>;
+    readonly pgSettings: pulumi.Output<{
+        [key: string]: string;
+    } | undefined>;
     /**
-     * Maximum number of compute units for the endpoint. **Default** `0.25`.
+     * Activate connection pooling. See details: https://neon.tech/docs/connect/connection-pooling
      */
-    readonly maxCu: pulumi.Output<number>;
+    readonly poolerEnabled: pulumi.Output<boolean>;
     /**
-     * Minimum number of compute units for the endpoint. **Default** `0.25`.
+     * Mode of connections pooling. See details: https://neon.tech/docs/connect/connection-pooling
      */
-    readonly minCu: pulumi.Output<number>;
+    readonly poolerMode: pulumi.Output<string>;
     /**
-     * Project the endpoint belongs to.
+     * Project ID.
      */
     readonly projectId: pulumi.Output<string>;
+    readonly proxyHost: pulumi.Output<string>;
     /**
-     * Suspend timeout of the endpoint. **Default** `0`.
+     * Deployment region: https://neon.tech/docs/introduction/regions
      */
-    readonly suspendTimeout: pulumi.Output<number>;
+    readonly regionId: pulumi.Output<string>;
     /**
-     * Type of the endpoint.
+     * Duration of inactivity in seconds after which the compute endpoint is automatically suspended. The value 0 means use the
+     * global default. The value -1 means never suspend. The default value is 300 seconds (5 minutes). The maximum value is
+     * 604800 seconds (1 week)
      */
-    readonly type: pulumi.Output<string>;
+    readonly suspendTimeoutSeconds: pulumi.Output<number>;
+    /**
+     * Access type. **Note** that a single branch can have only one "read_write" endpoint.
+     */
+    readonly type: pulumi.Output<string | undefined>;
     /**
      * Create a Endpoint resource with the given unique name, arguments, and options.
      *
@@ -60,36 +77,53 @@ export declare class Endpoint extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Endpoint resources.
  */
 export interface EndpointState {
+    autoscalingLimitMaxCu?: pulumi.Input<number>;
+    autoscalingLimitMinCu?: pulumi.Input<number>;
     /**
-     * Branch the endpoint belongs to.
+     * Branch ID.
      */
     branchId?: pulumi.Input<string>;
     /**
-     * Provisioner of the endpoint.
+     * Provisioner The Neon compute provisioner. Specify the k8s-neonvm provisioner to create a compute endpoint that supports
+     * Autoscaling.
      */
     computeProvisioner?: pulumi.Input<string>;
     /**
-     * Host of the endpoint.
+     * Disable the endpoint.
+     */
+    disabled?: pulumi.Input<boolean>;
+    /**
+     * Endpoint URI.
      */
     host?: pulumi.Input<string>;
+    pgSettings?: pulumi.Input<{
+        [key: string]: pulumi.Input<string>;
+    }>;
     /**
-     * Maximum number of compute units for the endpoint. **Default** `0.25`.
+     * Activate connection pooling. See details: https://neon.tech/docs/connect/connection-pooling
      */
-    maxCu?: pulumi.Input<number>;
+    poolerEnabled?: pulumi.Input<boolean>;
     /**
-     * Minimum number of compute units for the endpoint. **Default** `0.25`.
+     * Mode of connections pooling. See details: https://neon.tech/docs/connect/connection-pooling
      */
-    minCu?: pulumi.Input<number>;
+    poolerMode?: pulumi.Input<string>;
     /**
-     * Project the endpoint belongs to.
+     * Project ID.
      */
     projectId?: pulumi.Input<string>;
+    proxyHost?: pulumi.Input<string>;
     /**
-     * Suspend timeout of the endpoint. **Default** `0`.
+     * Deployment region: https://neon.tech/docs/introduction/regions
      */
-    suspendTimeout?: pulumi.Input<number>;
+    regionId?: pulumi.Input<string>;
     /**
-     * Type of the endpoint.
+     * Duration of inactivity in seconds after which the compute endpoint is automatically suspended. The value 0 means use the
+     * global default. The value -1 means never suspend. The default value is 300 seconds (5 minutes). The maximum value is
+     * 604800 seconds (1 week)
+     */
+    suspendTimeoutSeconds?: pulumi.Input<number>;
+    /**
+     * Access type. **Note** that a single branch can have only one "read_write" endpoint.
      */
     type?: pulumi.Input<string>;
 }
@@ -97,28 +131,48 @@ export interface EndpointState {
  * The set of arguments for constructing a Endpoint resource.
  */
 export interface EndpointArgs {
+    autoscalingLimitMaxCu?: pulumi.Input<number>;
+    autoscalingLimitMinCu?: pulumi.Input<number>;
     /**
-     * Branch the endpoint belongs to.
+     * Branch ID.
      */
     branchId: pulumi.Input<string>;
     /**
-     * Maximum number of compute units for the endpoint. **Default** `0.25`.
+     * Provisioner The Neon compute provisioner. Specify the k8s-neonvm provisioner to create a compute endpoint that supports
+     * Autoscaling.
      */
-    maxCu?: pulumi.Input<number>;
+    computeProvisioner?: pulumi.Input<string>;
     /**
-     * Minimum number of compute units for the endpoint. **Default** `0.25`.
+     * Disable the endpoint.
      */
-    minCu?: pulumi.Input<number>;
+    disabled?: pulumi.Input<boolean>;
+    pgSettings?: pulumi.Input<{
+        [key: string]: pulumi.Input<string>;
+    }>;
     /**
-     * Project the endpoint belongs to.
+     * Activate connection pooling. See details: https://neon.tech/docs/connect/connection-pooling
+     */
+    poolerEnabled?: pulumi.Input<boolean>;
+    /**
+     * Mode of connections pooling. See details: https://neon.tech/docs/connect/connection-pooling
+     */
+    poolerMode?: pulumi.Input<string>;
+    /**
+     * Project ID.
      */
     projectId: pulumi.Input<string>;
     /**
-     * Suspend timeout of the endpoint. **Default** `0`.
+     * Deployment region: https://neon.tech/docs/introduction/regions
      */
-    suspendTimeout?: pulumi.Input<number>;
+    regionId?: pulumi.Input<string>;
     /**
-     * Type of the endpoint. One of `read_write` or `read_only`.
+     * Duration of inactivity in seconds after which the compute endpoint is automatically suspended. The value 0 means use the
+     * global default. The value -1 means never suspend. The default value is 300 seconds (5 minutes). The maximum value is
+     * 604800 seconds (1 week)
+     */
+    suspendTimeoutSeconds?: pulumi.Input<number>;
+    /**
+     * Access type. **Note** that a single branch can have only one "read_write" endpoint.
      */
     type?: pulumi.Input<string>;
 }

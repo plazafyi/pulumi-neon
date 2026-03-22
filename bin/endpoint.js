@@ -16,7 +16,7 @@ class Endpoint extends pulumi.CustomResource {
      * @param opts Optional settings to control the behavior of the CustomResource.
      */
     static get(name, id, state, opts) {
-        return new Endpoint(name, state, Object.assign(Object.assign({}, opts), { id: id }));
+        return new Endpoint(name, state, { ...opts, id: id });
     }
     /**
      * Returns true if the given object is an instance of Endpoint.  This is designed to work even
@@ -33,31 +33,43 @@ class Endpoint extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState;
-            resourceInputs["branchId"] = state ? state.branchId : undefined;
-            resourceInputs["computeProvisioner"] = state ? state.computeProvisioner : undefined;
-            resourceInputs["host"] = state ? state.host : undefined;
-            resourceInputs["maxCu"] = state ? state.maxCu : undefined;
-            resourceInputs["minCu"] = state ? state.minCu : undefined;
-            resourceInputs["projectId"] = state ? state.projectId : undefined;
-            resourceInputs["suspendTimeout"] = state ? state.suspendTimeout : undefined;
-            resourceInputs["type"] = state ? state.type : undefined;
+            resourceInputs["autoscalingLimitMaxCu"] = state?.autoscalingLimitMaxCu;
+            resourceInputs["autoscalingLimitMinCu"] = state?.autoscalingLimitMinCu;
+            resourceInputs["branchId"] = state?.branchId;
+            resourceInputs["computeProvisioner"] = state?.computeProvisioner;
+            resourceInputs["disabled"] = state?.disabled;
+            resourceInputs["host"] = state?.host;
+            resourceInputs["pgSettings"] = state?.pgSettings;
+            resourceInputs["poolerEnabled"] = state?.poolerEnabled;
+            resourceInputs["poolerMode"] = state?.poolerMode;
+            resourceInputs["projectId"] = state?.projectId;
+            resourceInputs["proxyHost"] = state?.proxyHost;
+            resourceInputs["regionId"] = state?.regionId;
+            resourceInputs["suspendTimeoutSeconds"] = state?.suspendTimeoutSeconds;
+            resourceInputs["type"] = state?.type;
         }
         else {
             const args = argsOrState;
-            if ((!args || args.branchId === undefined) && !opts.urn) {
+            if (args?.branchId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'branchId'");
             }
-            if ((!args || args.projectId === undefined) && !opts.urn) {
+            if (args?.projectId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'projectId'");
             }
-            resourceInputs["branchId"] = args ? args.branchId : undefined;
-            resourceInputs["maxCu"] = args ? args.maxCu : undefined;
-            resourceInputs["minCu"] = args ? args.minCu : undefined;
-            resourceInputs["projectId"] = args ? args.projectId : undefined;
-            resourceInputs["suspendTimeout"] = args ? args.suspendTimeout : undefined;
-            resourceInputs["type"] = args ? args.type : undefined;
-            resourceInputs["computeProvisioner"] = undefined /*out*/;
+            resourceInputs["autoscalingLimitMaxCu"] = args?.autoscalingLimitMaxCu;
+            resourceInputs["autoscalingLimitMinCu"] = args?.autoscalingLimitMinCu;
+            resourceInputs["branchId"] = args?.branchId;
+            resourceInputs["computeProvisioner"] = args?.computeProvisioner;
+            resourceInputs["disabled"] = args?.disabled;
+            resourceInputs["pgSettings"] = args?.pgSettings;
+            resourceInputs["poolerEnabled"] = args?.poolerEnabled;
+            resourceInputs["poolerMode"] = args?.poolerMode;
+            resourceInputs["projectId"] = args?.projectId;
+            resourceInputs["regionId"] = args?.regionId;
+            resourceInputs["suspendTimeoutSeconds"] = args?.suspendTimeoutSeconds;
+            resourceInputs["type"] = args?.type;
             resourceInputs["host"] = undefined /*out*/;
+            resourceInputs["proxyHost"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Endpoint.__pulumiType, name, resourceInputs, opts, false /*dependency*/, utilities.getPackage());

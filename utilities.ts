@@ -70,6 +70,7 @@ export function lazyLoad(exports: any, props: string[], loadModule: any) {
     }
 }
 
+/** @internal */
 export async function callAsync<T>(
     tok: string,
     props: pulumi.Inputs,
@@ -109,8 +110,8 @@ export async function getPackage() : Promise<string | undefined> {
 			const monitor = runtime.getMonitor();
 			const params = new resproto.Parameterization();
 			params.setName("neon");
-			params.setVersion("0.1.12");
-			params.setValue(Uint8Array.from(atob("eyJyZW1vdGUiOnsidXJsIjoicmVnaXN0cnkub3BlbnRvZnUub3JnL3RlcnJhZm9ybS1jb21tdW5pdHktcHJvdmlkZXJzL25lb24iLCJ2ZXJzaW9uIjoiMC4xLjEyIn19"), c => c.charCodeAt(0)));
+			params.setVersion("0.13.0");
+			params.setValue(Uint8Array.from(atob("eyJyZW1vdGUiOnsidXJsIjoicmVnaXN0cnkub3BlbnRvZnUub3JnL2tpc2xlcmRtL25lb24iLCJ2ZXJzaW9uIjoiMC4xMy4wIn19"), c => c.charCodeAt(0)));
 
 			const req = new resproto.RegisterPackageRequest();
 			req.setName("terraform-provider");

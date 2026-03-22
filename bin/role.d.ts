@@ -16,21 +16,23 @@ export declare class Role extends pulumi.CustomResource {
      */
     static isInstance(obj: any): obj is Role;
     /**
-     * Branch the role belongs to.
+     * Branch ID.
      */
     readonly branchId: pulumi.Output<string>;
     /**
-     * Name of the role.
+     * Role name.
      */
     readonly name: pulumi.Output<string>;
     /**
-     * Password of the role.
+     * Database authentication password.
      */
     readonly password: pulumi.Output<string>;
     /**
-     * Project the role belongs to.
+     * Project ID.
      */
     readonly projectId: pulumi.Output<string>;
+    readonly protected: pulumi.Output<boolean>;
+    readonly roleId: pulumi.Output<string>;
     /**
      * Create a Role resource with the given unique name, arguments, and options.
      *
@@ -45,36 +47,39 @@ export declare class Role extends pulumi.CustomResource {
  */
 export interface RoleState {
     /**
-     * Branch the role belongs to.
+     * Branch ID.
      */
     branchId?: pulumi.Input<string>;
     /**
-     * Name of the role.
+     * Role name.
      */
     name?: pulumi.Input<string>;
     /**
-     * Password of the role.
+     * Database authentication password.
      */
     password?: pulumi.Input<string>;
     /**
-     * Project the role belongs to.
+     * Project ID.
      */
     projectId?: pulumi.Input<string>;
+    protected?: pulumi.Input<boolean>;
+    roleId?: pulumi.Input<string>;
 }
 /**
  * The set of arguments for constructing a Role resource.
  */
 export interface RoleArgs {
     /**
-     * Branch the role belongs to.
+     * Branch ID.
      */
     branchId: pulumi.Input<string>;
     /**
-     * Name of the role.
+     * Role name.
      */
     name?: pulumi.Input<string>;
     /**
-     * Project the role belongs to.
+     * Project ID.
      */
     projectId: pulumi.Input<string>;
+    roleId?: pulumi.Input<string>;
 }

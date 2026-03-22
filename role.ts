@@ -33,21 +33,23 @@ export class Role extends pulumi.CustomResource {
     }
 
     /**
-     * Branch the role belongs to.
+     * Branch ID.
      */
-    public readonly branchId!: pulumi.Output<string>;
+    declare public readonly branchId: pulumi.Output<string>;
     /**
-     * Name of the role.
+     * Role name.
      */
-    public readonly name!: pulumi.Output<string>;
+    declare public readonly name: pulumi.Output<string>;
     /**
-     * Password of the role.
+     * Database authentication password.
      */
-    public /*out*/ readonly password!: pulumi.Output<string>;
+    declare public /*out*/ readonly password: pulumi.Output<string>;
     /**
-     * Project the role belongs to.
+     * Project ID.
      */
-    public readonly projectId!: pulumi.Output<string>;
+    declare public readonly projectId: pulumi.Output<string>;
+    declare public /*out*/ readonly protected: pulumi.Output<boolean>;
+    declare public readonly roleId: pulumi.Output<string>;
 
     /**
      * Create a Role resource with the given unique name, arguments, and options.
@@ -62,22 +64,26 @@ export class Role extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as RoleState | undefined;
-            resourceInputs["branchId"] = state ? state.branchId : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["password"] = state ? state.password : undefined;
-            resourceInputs["projectId"] = state ? state.projectId : undefined;
+            resourceInputs["branchId"] = state?.branchId;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["password"] = state?.password;
+            resourceInputs["projectId"] = state?.projectId;
+            resourceInputs["protected"] = state?.protected;
+            resourceInputs["roleId"] = state?.roleId;
         } else {
             const args = argsOrState as RoleArgs | undefined;
-            if ((!args || args.branchId === undefined) && !opts.urn) {
+            if (args?.branchId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'branchId'");
             }
-            if ((!args || args.projectId === undefined) && !opts.urn) {
+            if (args?.projectId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'projectId'");
             }
-            resourceInputs["branchId"] = args ? args.branchId : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["projectId"] = args ? args.projectId : undefined;
+            resourceInputs["branchId"] = args?.branchId;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["projectId"] = args?.projectId;
+            resourceInputs["roleId"] = args?.roleId;
             resourceInputs["password"] = undefined /*out*/;
+            resourceInputs["protected"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         const secretOpts = { additionalSecretOutputs: ["password"] };
@@ -91,21 +97,23 @@ export class Role extends pulumi.CustomResource {
  */
 export interface RoleState {
     /**
-     * Branch the role belongs to.
+     * Branch ID.
      */
     branchId?: pulumi.Input<string>;
     /**
-     * Name of the role.
+     * Role name.
      */
     name?: pulumi.Input<string>;
     /**
-     * Password of the role.
+     * Database authentication password.
      */
     password?: pulumi.Input<string>;
     /**
-     * Project the role belongs to.
+     * Project ID.
      */
     projectId?: pulumi.Input<string>;
+    protected?: pulumi.Input<boolean>;
+    roleId?: pulumi.Input<string>;
 }
 
 /**
@@ -113,15 +121,16 @@ export interface RoleState {
  */
 export interface RoleArgs {
     /**
-     * Branch the role belongs to.
+     * Branch ID.
      */
     branchId: pulumi.Input<string>;
     /**
-     * Name of the role.
+     * Role name.
      */
     name?: pulumi.Input<string>;
     /**
-     * Project the role belongs to.
+     * Project ID.
      */
     projectId: pulumi.Input<string>;
+    roleId?: pulumi.Input<string>;
 }

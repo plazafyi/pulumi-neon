@@ -5,72 +5,115 @@ import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 
-export interface BranchEndpoint {
+export interface GetBranchEndpointsEndpoint {
     /**
-     * Provisioner of the endpoint.
-     */
-    computeProvisioner: string;
-    /**
-     * Host of the endpoint.
+     * Endpoint URI.
      */
     host: string;
     /**
-     * Identifier of the endpoint.
+     * Endpoint ID.
      */
     id: string;
+    proxyHost: string;
     /**
-     * Maximum number of compute units for the endpoint. **Default** `0.25`.
+     * Deployment region: https://neon.tech/docs/introduction/regions
      */
-    maxCu: number;
+    regionId: string;
     /**
-     * Minimum number of compute units for the endpoint. **Default** `0.25`.
+     * Access type.
      */
-    minCu: number;
+    type: string;
+}
+
+export interface GetBranchRolesRole {
     /**
-     * Suspend timeout of the endpoint. **Default** `0`.
+     * Role name.
      */
-    suspendTimeout: number;
+    name: string;
+    protected: boolean;
+}
+
+export interface GetBranchesBranch {
+    id: string;
+    logicalSize: number;
+    name: string;
+    parentId: string;
+    primary: boolean;
 }
 
 export interface ProjectBranch {
     /**
-     * Read-write compute endpoint settings of the branch.
+     * The name of the default database provisioned upon creation of new project. It's owned by the default role (`role_name`).
+     * If not specified, the default database name will be used.
      */
-    endpoint: outputs.ProjectBranchEndpoint;
+    databaseName: string;
     /**
-     * Identifier of the branch.
+     * Branch ID.
      */
     id: string;
     /**
-     * Name of the branch.
+     * The name of the default branch provisioned upon creation of new project.
+     * If not specified, the default branch name will be used.
      */
     name: string;
+    /**
+     * The name of the default role provisioned upon creation of new project.
+     * If not specified, the default role name will be used.
+     */
+    roleName: string;
 }
 
-export interface ProjectBranchEndpoint {
+export interface ProjectDefaultEndpointSettings {
+    autoscalingLimitMaxCu: number;
+    autoscalingLimitMinCu: number;
     /**
-     * Provisioner of the endpoint.
-     */
-    computeProvisioner: string;
-    /**
-     * Host of the endpoint.
-     */
-    host: string;
-    /**
-     * Identifier of the endpoint.
+     * Endpoint ID.
      */
     id: string;
     /**
-     * Maximum number of compute units for the endpoint. **Default** `0.25`.
+     * Duration of inactivity in seconds after which the compute endpoint is automatically suspended.
+     * The value 0 means use the global default.
+     * The value -1 means never suspend. The default value is 300 seconds (5 minutes).
+     * The maximum value is 604800 seconds (1 week)
      */
-    maxCu: number;
+    suspendTimeoutSeconds: number;
+}
+
+export interface ProjectMaintenanceWindow {
     /**
-     * Minimum number of compute units for the endpoint. **Default** `0.25`.
+     * End time of the maintenance window, in the format of "HH:MM". Uses UTC.
      */
-    minCu: number;
+    endTime: string;
     /**
-     * Suspend timeout of the endpoint. **Default** `0`.
+     * Start time of the maintenance window, in the format of "HH:MM". Uses UTC.
      */
-    suspendTimeout: number;
+    startTime: string;
+    /**
+     * A list of weekdays when the maintenance window is active. Encoded as ints, where 1 - Monday, and 7 - Sunday.
+     */
+    weekdays: number[];
+}
+
+export interface ProjectQuota {
+    /**
+     * The total amount of wall-clock time allowed to be spent by the project's compute endpoints.
+     */
+    activeTimeSeconds: number;
+    /**
+     * The total amount of CPU seconds allowed to be spent by the project's compute endpoints.
+     */
+    computeTimeSeconds: number;
+    /**
+     * Total amount of data transferred from all of a project's branches using the proxy.
+     */
+    dataTransferBytes: number;
+    /**
+     * Limit on the logical size of every project's branch.
+     */
+    logicalSizeBytes: number;
+    /**
+     * Total amount of data written to all of a project's branches.
+     */
+    writtenDataBytes: number;
 }
 

@@ -16,7 +16,7 @@ class Database extends pulumi.CustomResource {
      * @param opts Optional settings to control the behavior of the CustomResource.
      */
     static get(name, id, state, opts) {
-        return new Database(name, state, Object.assign(Object.assign({}, opts), { id: id }));
+        return new Database(name, state, { ...opts, id: id });
     }
     /**
      * Returns true if the given object is an instance of Database.  This is designed to work even
@@ -33,26 +33,28 @@ class Database extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState;
-            resourceInputs["branchId"] = state ? state.branchId : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["ownerName"] = state ? state.ownerName : undefined;
-            resourceInputs["projectId"] = state ? state.projectId : undefined;
+            resourceInputs["branchId"] = state?.branchId;
+            resourceInputs["databaseId"] = state?.databaseId;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["ownerName"] = state?.ownerName;
+            resourceInputs["projectId"] = state?.projectId;
         }
         else {
             const args = argsOrState;
-            if ((!args || args.branchId === undefined) && !opts.urn) {
+            if (args?.branchId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'branchId'");
             }
-            if ((!args || args.ownerName === undefined) && !opts.urn) {
+            if (args?.ownerName === undefined && !opts.urn) {
                 throw new Error("Missing required property 'ownerName'");
             }
-            if ((!args || args.projectId === undefined) && !opts.urn) {
+            if (args?.projectId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'projectId'");
             }
-            resourceInputs["branchId"] = args ? args.branchId : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["ownerName"] = args ? args.ownerName : undefined;
-            resourceInputs["projectId"] = args ? args.projectId : undefined;
+            resourceInputs["branchId"] = args?.branchId;
+            resourceInputs["databaseId"] = args?.databaseId;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["ownerName"] = args?.ownerName;
+            resourceInputs["projectId"] = args?.projectId;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Database.__pulumiType, name, resourceInputs, opts, false /*dependency*/, utilities.getPackage());

@@ -1,6 +1,4 @@
 import * as pulumi from "@pulumi/pulumi";
-import * as inputs from "./types/input";
-import * as outputs from "./types/output";
 export declare class Branch extends pulumi.CustomResource {
     /**
      * Get an existing Branch resource's state with the given name, ID, and optional extra
@@ -18,21 +16,35 @@ export declare class Branch extends pulumi.CustomResource {
      */
     static isInstance(obj: any): obj is Branch;
     /**
-     * Read-write compute endpoint settings of the branch.
+     * Branch logical size in MB.
      */
-    readonly endpoint: pulumi.Output<outputs.BranchEndpoint | undefined>;
+    readonly logicalSize: pulumi.Output<number>;
     /**
-     * Name of the branch.
+     * Branch name.
      */
     readonly name: pulumi.Output<string>;
     /**
-     * ID of the parent branch. Defaults to the primary branch.
+     * ID of the branch to check out.
      */
     readonly parentId: pulumi.Output<string>;
     /**
-     * Project the branch belongs to.
+     * Log Sequence Number (LSN) horizon for the data to be present in the new branch. See details:
+     * https://neon.tech/docs/reference/glossary/#lsn
+     */
+    readonly parentLsn: pulumi.Output<string>;
+    /**
+     * Timestamp horizon for the data to be present in the new branch. **Note**: it's defined as Unix epoch.'
+     */
+    readonly parentTimestamp: pulumi.Output<number>;
+    /**
+     * Project ID.
      */
     readonly projectId: pulumi.Output<string>;
+    /**
+     * Set to 'yes' to activate, 'no' to deactivate explicitly, and omit to keep the default value. Set whether the branch is
+     * protected.
+     */
+    readonly protected: pulumi.Output<string | undefined>;
     /**
      * Create a Branch resource with the given unique name, arguments, and options.
      *
@@ -47,40 +59,64 @@ export declare class Branch extends pulumi.CustomResource {
  */
 export interface BranchState {
     /**
-     * Read-write compute endpoint settings of the branch.
+     * Branch logical size in MB.
      */
-    endpoint?: pulumi.Input<inputs.BranchEndpoint>;
+    logicalSize?: pulumi.Input<number>;
     /**
-     * Name of the branch.
+     * Branch name.
      */
     name?: pulumi.Input<string>;
     /**
-     * ID of the parent branch. Defaults to the primary branch.
+     * ID of the branch to check out.
      */
     parentId?: pulumi.Input<string>;
     /**
-     * Project the branch belongs to.
+     * Log Sequence Number (LSN) horizon for the data to be present in the new branch. See details:
+     * https://neon.tech/docs/reference/glossary/#lsn
+     */
+    parentLsn?: pulumi.Input<string>;
+    /**
+     * Timestamp horizon for the data to be present in the new branch. **Note**: it's defined as Unix epoch.'
+     */
+    parentTimestamp?: pulumi.Input<number>;
+    /**
+     * Project ID.
      */
     projectId?: pulumi.Input<string>;
+    /**
+     * Set to 'yes' to activate, 'no' to deactivate explicitly, and omit to keep the default value. Set whether the branch is
+     * protected.
+     */
+    protected?: pulumi.Input<string>;
 }
 /**
  * The set of arguments for constructing a Branch resource.
  */
 export interface BranchArgs {
     /**
-     * Read-write compute endpoint settings of the branch.
-     */
-    endpoint?: pulumi.Input<inputs.BranchEndpoint>;
-    /**
-     * Name of the branch.
+     * Branch name.
      */
     name?: pulumi.Input<string>;
     /**
-     * ID of the parent branch. Defaults to the primary branch.
+     * ID of the branch to check out.
      */
     parentId?: pulumi.Input<string>;
     /**
-     * Project the branch belongs to.
+     * Log Sequence Number (LSN) horizon for the data to be present in the new branch. See details:
+     * https://neon.tech/docs/reference/glossary/#lsn
+     */
+    parentLsn?: pulumi.Input<string>;
+    /**
+     * Timestamp horizon for the data to be present in the new branch. **Note**: it's defined as Unix epoch.'
+     */
+    parentTimestamp?: pulumi.Input<number>;
+    /**
+     * Project ID.
      */
     projectId: pulumi.Input<string>;
+    /**
+     * Set to 'yes' to activate, 'no' to deactivate explicitly, and omit to keep the default value. Set whether the branch is
+     * protected.
+     */
+    protected?: pulumi.Input<string>;
 }

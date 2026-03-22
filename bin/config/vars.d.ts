@@ -1,4 +1,4 @@
 /**
- * The token used to authenticate with Neon.
+ * API access key. Default is read from the environment variable `NEON_API_KEY`.
  */
-export declare const token: string | undefined;
+export declare const apiKey: string | undefined;

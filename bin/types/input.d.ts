@@ -1,68 +1,125 @@
 import * as pulumi from "@pulumi/pulumi";
-import * as inputs from "../types/input";
-export interface BranchEndpoint {
+export interface GetBranchEndpointsEndpoint {
     /**
-     * Provisioner of the endpoint.
+     * Endpoint URI.
      */
-    computeProvisioner?: pulumi.Input<string>;
+    host?: string;
     /**
-     * Host of the endpoint.
+     * Endpoint ID.
+     */
+    id?: string;
+    proxyHost?: string;
+    /**
+     * Deployment region: https://neon.tech/docs/introduction/regions
+     */
+    regionId?: string;
+    /**
+     * Access type.
+     */
+    type?: string;
+}
+export interface GetBranchEndpointsEndpointArgs {
+    /**
+     * Endpoint URI.
      */
     host?: pulumi.Input<string>;
     /**
-     * Identifier of the endpoint.
+     * Endpoint ID.
      */
     id?: pulumi.Input<string>;
+    proxyHost?: pulumi.Input<string>;
     /**
-     * Maximum number of compute units for the endpoint. **Default** `0.25`.
+     * Deployment region: https://neon.tech/docs/introduction/regions
      */
-    maxCu?: pulumi.Input<number>;
+    regionId?: pulumi.Input<string>;
     /**
-     * Minimum number of compute units for the endpoint. **Default** `0.25`.
+     * Access type.
      */
-    minCu?: pulumi.Input<number>;
+    type?: pulumi.Input<string>;
+}
+export interface GetBranchRolesRole {
     /**
-     * Suspend timeout of the endpoint. **Default** `0`.
+     * Role name.
      */
-    suspendTimeout?: pulumi.Input<number>;
+    name?: string;
+    protected?: boolean;
+}
+export interface GetBranchRolesRoleArgs {
+    /**
+     * Role name.
+     */
+    name?: pulumi.Input<string>;
+    protected?: pulumi.Input<boolean>;
 }
 export interface ProjectBranch {
     /**
-     * Read-write compute endpoint settings of the branch.
+     * The name of the default database provisioned upon creation of new project. It's owned by the default role (`role_name`).
+     * If not specified, the default database name will be used.
      */
-    endpoint?: pulumi.Input<inputs.ProjectBranchEndpoint>;
+    databaseName?: pulumi.Input<string>;
     /**
-     * Identifier of the branch.
+     * Branch ID.
      */
     id?: pulumi.Input<string>;
     /**
-     * Name of the branch.
+     * The name of the default branch provisioned upon creation of new project.
+     * If not specified, the default branch name will be used.
      */
     name?: pulumi.Input<string>;
+    /**
+     * The name of the default role provisioned upon creation of new project.
+     * If not specified, the default role name will be used.
+     */
+    roleName?: pulumi.Input<string>;
 }
-export interface ProjectBranchEndpoint {
+export interface ProjectDefaultEndpointSettings {
+    autoscalingLimitMaxCu?: pulumi.Input<number>;
+    autoscalingLimitMinCu?: pulumi.Input<number>;
     /**
-     * Provisioner of the endpoint.
-     */
-    computeProvisioner?: pulumi.Input<string>;
-    /**
-     * Host of the endpoint.
-     */
-    host?: pulumi.Input<string>;
-    /**
-     * Identifier of the endpoint.
+     * Endpoint ID.
      */
     id?: pulumi.Input<string>;
     /**
-     * Maximum number of compute units for the endpoint. **Default** `0.25`.
+     * Duration of inactivity in seconds after which the compute endpoint is automatically suspended.
+     * The value 0 means use the global default.
+     * The value -1 means never suspend. The default value is 300 seconds (5 minutes).
+     * The maximum value is 604800 seconds (1 week)
      */
-    maxCu?: pulumi.Input<number>;
+    suspendTimeoutSeconds?: pulumi.Input<number>;
+}
+export interface ProjectMaintenanceWindow {
     /**
-     * Minimum number of compute units for the endpoint. **Default** `0.25`.
+     * End time of the maintenance window, in the format of "HH:MM". Uses UTC.
      */
-    minCu?: pulumi.Input<number>;
+    endTime: pulumi.Input<string>;
     /**
-     * Suspend timeout of the endpoint. **Default** `0`.
+     * Start time of the maintenance window, in the format of "HH:MM". Uses UTC.
      */
-    suspendTimeout?: pulumi.Input<number>;
+    startTime: pulumi.Input<string>;
+    /**
+     * A list of weekdays when the maintenance window is active. Encoded as ints, where 1 - Monday, and 7 - Sunday.
+     */
+    weekdays: pulumi.Input<pulumi.Input<number>[]>;
+}
+export interface ProjectQuota {
+    /**
+     * The total amount of wall-clock time allowed to be spent by the project's compute endpoints.
+     */
+    activeTimeSeconds?: pulumi.Input<number>;
+    /**
+     * The total amount of CPU seconds allowed to be spent by the project's compute endpoints.
+     */
+    computeTimeSeconds?: pulumi.Input<number>;
+    /**
+     * Total amount of data transferred from all of a project's branches using the proxy.
+     */
+    dataTransferBytes?: pulumi.Input<number>;
+    /**
+     * Limit on the logical size of every project's branch.
+     */
+    logicalSizeBytes?: pulumi.Input<number>;
+    /**
+     * Total amount of data written to all of a project's branches.
+     */
+    writtenDataBytes?: pulumi.Input<number>;
 }

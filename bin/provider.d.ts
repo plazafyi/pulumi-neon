@@ -12,9 +12,9 @@ export declare class Provider extends pulumi.ProviderResource {
      */
     static isInstance(obj: any): obj is Provider;
     /**
-     * The token used to authenticate with Neon.
+     * API access key. Default is read from the environment variable `NEON_API_KEY`.
      */
-    readonly token: pulumi.Output<string | undefined>;
+    readonly apiKey: pulumi.Output<string | undefined>;
     /**
      * Create a Provider resource with the given unique name, arguments, and options.
      *
@@ -29,7 +29,7 @@ export declare class Provider extends pulumi.ProviderResource {
  */
 export interface ProviderArgs {
     /**
-     * The token used to authenticate with Neon.
+     * API access key. Default is read from the environment variable `NEON_API_KEY`.
      */
-    token?: pulumi.Input<string>;
+    apiKey?: pulumi.Input<string>;
 }

@@ -16,7 +16,7 @@ class Project extends pulumi.CustomResource {
      * @param opts Optional settings to control the behavior of the CustomResource.
      */
     static get(name, id, state, opts) {
-        return new Project(name, state, Object.assign(Object.assign({}, opts), { id: id }));
+        return new Project(name, state, { ...opts, id: id });
     }
     /**
      * Returns true if the given object is an instance of Project.  This is designed to work even
@@ -33,26 +33,63 @@ class Project extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState;
-            resourceInputs["branch"] = state ? state.branch : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["orgId"] = state ? state.orgId : undefined;
-            resourceInputs["pgVersion"] = state ? state.pgVersion : undefined;
-            resourceInputs["platformId"] = state ? state.platformId : undefined;
-            resourceInputs["regionId"] = state ? state.regionId : undefined;
+            resourceInputs["allowedIps"] = state?.allowedIps;
+            resourceInputs["allowedIpsProtectedBranchesOnly"] = state?.allowedIpsProtectedBranchesOnly;
+            resourceInputs["blockPublicConnections"] = state?.blockPublicConnections;
+            resourceInputs["blockVpcConnections"] = state?.blockVpcConnections;
+            resourceInputs["branch"] = state?.branch;
+            resourceInputs["computeProvisioner"] = state?.computeProvisioner;
+            resourceInputs["connectionUri"] = state?.connectionUri;
+            resourceInputs["connectionUriPooler"] = state?.connectionUriPooler;
+            resourceInputs["databaseHost"] = state?.databaseHost;
+            resourceInputs["databaseHostPooler"] = state?.databaseHostPooler;
+            resourceInputs["databaseName"] = state?.databaseName;
+            resourceInputs["databasePassword"] = state?.databasePassword;
+            resourceInputs["databaseUser"] = state?.databaseUser;
+            resourceInputs["defaultBranchId"] = state?.defaultBranchId;
+            resourceInputs["defaultEndpointId"] = state?.defaultEndpointId;
+            resourceInputs["defaultEndpointSettings"] = state?.defaultEndpointSettings;
+            resourceInputs["enableLogicalReplication"] = state?.enableLogicalReplication;
+            resourceInputs["historyRetentionSeconds"] = state?.historyRetentionSeconds;
+            resourceInputs["maintenanceWindow"] = state?.maintenanceWindow;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["orgId"] = state?.orgId;
+            resourceInputs["pgVersion"] = state?.pgVersion;
+            resourceInputs["quota"] = state?.quota;
+            resourceInputs["regionId"] = state?.regionId;
+            resourceInputs["storePassword"] = state?.storePassword;
         }
         else {
             const args = argsOrState;
-            if ((!args || args.regionId === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'regionId'");
-            }
-            resourceInputs["branch"] = args ? args.branch : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["orgId"] = args ? args.orgId : undefined;
-            resourceInputs["pgVersion"] = args ? args.pgVersion : undefined;
-            resourceInputs["regionId"] = args ? args.regionId : undefined;
-            resourceInputs["platformId"] = undefined /*out*/;
+            resourceInputs["allowedIps"] = args?.allowedIps;
+            resourceInputs["allowedIpsProtectedBranchesOnly"] = args?.allowedIpsProtectedBranchesOnly;
+            resourceInputs["blockPublicConnections"] = args?.blockPublicConnections;
+            resourceInputs["blockVpcConnections"] = args?.blockVpcConnections;
+            resourceInputs["branch"] = args?.branch;
+            resourceInputs["computeProvisioner"] = args?.computeProvisioner;
+            resourceInputs["defaultEndpointSettings"] = args?.defaultEndpointSettings;
+            resourceInputs["enableLogicalReplication"] = args?.enableLogicalReplication;
+            resourceInputs["historyRetentionSeconds"] = args?.historyRetentionSeconds;
+            resourceInputs["maintenanceWindow"] = args?.maintenanceWindow;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["orgId"] = args?.orgId;
+            resourceInputs["pgVersion"] = args?.pgVersion;
+            resourceInputs["quota"] = args?.quota;
+            resourceInputs["regionId"] = args?.regionId;
+            resourceInputs["storePassword"] = args?.storePassword;
+            resourceInputs["connectionUri"] = undefined /*out*/;
+            resourceInputs["connectionUriPooler"] = undefined /*out*/;
+            resourceInputs["databaseHost"] = undefined /*out*/;
+            resourceInputs["databaseHostPooler"] = undefined /*out*/;
+            resourceInputs["databaseName"] = undefined /*out*/;
+            resourceInputs["databasePassword"] = undefined /*out*/;
+            resourceInputs["databaseUser"] = undefined /*out*/;
+            resourceInputs["defaultBranchId"] = undefined /*out*/;
+            resourceInputs["defaultEndpointId"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        const secretOpts = { additionalSecretOutputs: ["connectionUri", "connectionUriPooler", "databasePassword"] };
+        opts = pulumi.mergeOptions(opts, secretOpts);
         super(Project.__pulumiType, name, resourceInputs, opts, false /*dependency*/, utilities.getPackage());
     }
 }

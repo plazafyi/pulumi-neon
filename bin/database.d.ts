@@ -16,19 +16,20 @@ export declare class Database extends pulumi.CustomResource {
      */
     static isInstance(obj: any): obj is Database;
     /**
-     * Branch the database belongs to.
+     * Branch ID.
      */
     readonly branchId: pulumi.Output<string>;
+    readonly databaseId: pulumi.Output<string>;
     /**
-     * Name of the database.
+     * Database name.
      */
     readonly name: pulumi.Output<string>;
     /**
-     * Name of the database owner.
+     * Role name of the database owner.
      */
     readonly ownerName: pulumi.Output<string>;
     /**
-     * Project the database belongs to.
+     * Project ID.
      */
     readonly projectId: pulumi.Output<string>;
     /**
@@ -45,19 +46,20 @@ export declare class Database extends pulumi.CustomResource {
  */
 export interface DatabaseState {
     /**
-     * Branch the database belongs to.
+     * Branch ID.
      */
     branchId?: pulumi.Input<string>;
+    databaseId?: pulumi.Input<string>;
     /**
-     * Name of the database.
+     * Database name.
      */
     name?: pulumi.Input<string>;
     /**
-     * Name of the database owner.
+     * Role name of the database owner.
      */
     ownerName?: pulumi.Input<string>;
     /**
-     * Project the database belongs to.
+     * Project ID.
      */
     projectId?: pulumi.Input<string>;
 }
@@ -66,19 +68,20 @@ export interface DatabaseState {
  */
 export interface DatabaseArgs {
     /**
-     * Branch the database belongs to.
+     * Branch ID.
      */
     branchId: pulumi.Input<string>;
+    databaseId?: pulumi.Input<string>;
     /**
-     * Name of the database.
+     * Database name.
      */
     name?: pulumi.Input<string>;
     /**
-     * Name of the database owner.
+     * Role name of the database owner.
      */
     ownerName: pulumi.Input<string>;
     /**
-     * Project the database belongs to.
+     * Project ID.
      */
     projectId: pulumi.Input<string>;
 }

@@ -16,7 +16,7 @@ class Role extends pulumi.CustomResource {
      * @param opts Optional settings to control the behavior of the CustomResource.
      */
     static get(name, id, state, opts) {
-        return new Role(name, state, Object.assign(Object.assign({}, opts), { id: id }));
+        return new Role(name, state, { ...opts, id: id });
     }
     /**
      * Returns true if the given object is an instance of Role.  This is designed to work even
@@ -33,23 +33,27 @@ class Role extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState;
-            resourceInputs["branchId"] = state ? state.branchId : undefined;
-            resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["password"] = state ? state.password : undefined;
-            resourceInputs["projectId"] = state ? state.projectId : undefined;
+            resourceInputs["branchId"] = state?.branchId;
+            resourceInputs["name"] = state?.name;
+            resourceInputs["password"] = state?.password;
+            resourceInputs["projectId"] = state?.projectId;
+            resourceInputs["protected"] = state?.protected;
+            resourceInputs["roleId"] = state?.roleId;
         }
         else {
             const args = argsOrState;
-            if ((!args || args.branchId === undefined) && !opts.urn) {
+            if (args?.branchId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'branchId'");
             }
-            if ((!args || args.projectId === undefined) && !opts.urn) {
+            if (args?.projectId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'projectId'");
             }
-            resourceInputs["branchId"] = args ? args.branchId : undefined;
-            resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["projectId"] = args ? args.projectId : undefined;
+            resourceInputs["branchId"] = args?.branchId;
+            resourceInputs["name"] = args?.name;
+            resourceInputs["projectId"] = args?.projectId;
+            resourceInputs["roleId"] = args?.roleId;
             resourceInputs["password"] = undefined /*out*/;
+            resourceInputs["protected"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         const secretOpts = { additionalSecretOutputs: ["password"] };

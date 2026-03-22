@@ -32,38 +32,53 @@ export class Endpoint extends pulumi.CustomResource {
         return obj['__pulumiType'] === Endpoint.__pulumiType;
     }
 
+    declare public readonly autoscalingLimitMaxCu: pulumi.Output<number>;
+    declare public readonly autoscalingLimitMinCu: pulumi.Output<number>;
     /**
-     * Branch the endpoint belongs to.
+     * Branch ID.
      */
-    public readonly branchId!: pulumi.Output<string>;
+    declare public readonly branchId: pulumi.Output<string>;
     /**
-     * Provisioner of the endpoint.
+     * Provisioner The Neon compute provisioner. Specify the k8s-neonvm provisioner to create a compute endpoint that supports
+     * Autoscaling.
      */
-    public /*out*/ readonly computeProvisioner!: pulumi.Output<string>;
+    declare public readonly computeProvisioner: pulumi.Output<string>;
     /**
-     * Host of the endpoint.
+     * Disable the endpoint.
      */
-    public /*out*/ readonly host!: pulumi.Output<string>;
+    declare public readonly disabled: pulumi.Output<boolean>;
     /**
-     * Maximum number of compute units for the endpoint. **Default** `0.25`.
+     * Endpoint URI.
      */
-    public readonly maxCu!: pulumi.Output<number>;
+    declare public /*out*/ readonly host: pulumi.Output<string>;
+    declare public readonly pgSettings: pulumi.Output<{[key: string]: string} | undefined>;
     /**
-     * Minimum number of compute units for the endpoint. **Default** `0.25`.
+     * Activate connection pooling. See details: https://neon.tech/docs/connect/connection-pooling
      */
-    public readonly minCu!: pulumi.Output<number>;
+    declare public readonly poolerEnabled: pulumi.Output<boolean>;
     /**
-     * Project the endpoint belongs to.
+     * Mode of connections pooling. See details: https://neon.tech/docs/connect/connection-pooling
      */
-    public readonly projectId!: pulumi.Output<string>;
+    declare public readonly poolerMode: pulumi.Output<string>;
     /**
-     * Suspend timeout of the endpoint. **Default** `0`.
+     * Project ID.
      */
-    public readonly suspendTimeout!: pulumi.Output<number>;
+    declare public readonly projectId: pulumi.Output<string>;
+    declare public /*out*/ readonly proxyHost: pulumi.Output<string>;
     /**
-     * Type of the endpoint.
+     * Deployment region: https://neon.tech/docs/introduction/regions
      */
-    public readonly type!: pulumi.Output<string>;
+    declare public readonly regionId: pulumi.Output<string>;
+    /**
+     * Duration of inactivity in seconds after which the compute endpoint is automatically suspended. The value 0 means use the
+     * global default. The value -1 means never suspend. The default value is 300 seconds (5 minutes). The maximum value is
+     * 604800 seconds (1 week)
+     */
+    declare public readonly suspendTimeoutSeconds: pulumi.Output<number>;
+    /**
+     * Access type. **Note** that a single branch can have only one "read_write" endpoint.
+     */
+    declare public readonly type: pulumi.Output<string | undefined>;
 
     /**
      * Create a Endpoint resource with the given unique name, arguments, and options.
@@ -78,30 +93,42 @@ export class Endpoint extends pulumi.CustomResource {
         opts = opts || {};
         if (opts.id) {
             const state = argsOrState as EndpointState | undefined;
-            resourceInputs["branchId"] = state ? state.branchId : undefined;
-            resourceInputs["computeProvisioner"] = state ? state.computeProvisioner : undefined;
-            resourceInputs["host"] = state ? state.host : undefined;
-            resourceInputs["maxCu"] = state ? state.maxCu : undefined;
-            resourceInputs["minCu"] = state ? state.minCu : undefined;
-            resourceInputs["projectId"] = state ? state.projectId : undefined;
-            resourceInputs["suspendTimeout"] = state ? state.suspendTimeout : undefined;
-            resourceInputs["type"] = state ? state.type : undefined;
+            resourceInputs["autoscalingLimitMaxCu"] = state?.autoscalingLimitMaxCu;
+            resourceInputs["autoscalingLimitMinCu"] = state?.autoscalingLimitMinCu;
+            resourceInputs["branchId"] = state?.branchId;
+            resourceInputs["computeProvisioner"] = state?.computeProvisioner;
+            resourceInputs["disabled"] = state?.disabled;
+            resourceInputs["host"] = state?.host;
+            resourceInputs["pgSettings"] = state?.pgSettings;
+            resourceInputs["poolerEnabled"] = state?.poolerEnabled;
+            resourceInputs["poolerMode"] = state?.poolerMode;
+            resourceInputs["projectId"] = state?.projectId;
+            resourceInputs["proxyHost"] = state?.proxyHost;
+            resourceInputs["regionId"] = state?.regionId;
+            resourceInputs["suspendTimeoutSeconds"] = state?.suspendTimeoutSeconds;
+            resourceInputs["type"] = state?.type;
         } else {
             const args = argsOrState as EndpointArgs | undefined;
-            if ((!args || args.branchId === undefined) && !opts.urn) {
+            if (args?.branchId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'branchId'");
             }
-            if ((!args || args.projectId === undefined) && !opts.urn) {
+            if (args?.projectId === undefined && !opts.urn) {
                 throw new Error("Missing required property 'projectId'");
             }
-            resourceInputs["branchId"] = args ? args.branchId : undefined;
-            resourceInputs["maxCu"] = args ? args.maxCu : undefined;
-            resourceInputs["minCu"] = args ? args.minCu : undefined;
-            resourceInputs["projectId"] = args ? args.projectId : undefined;
-            resourceInputs["suspendTimeout"] = args ? args.suspendTimeout : undefined;
-            resourceInputs["type"] = args ? args.type : undefined;
-            resourceInputs["computeProvisioner"] = undefined /*out*/;
+            resourceInputs["autoscalingLimitMaxCu"] = args?.autoscalingLimitMaxCu;
+            resourceInputs["autoscalingLimitMinCu"] = args?.autoscalingLimitMinCu;
+            resourceInputs["branchId"] = args?.branchId;
+            resourceInputs["computeProvisioner"] = args?.computeProvisioner;
+            resourceInputs["disabled"] = args?.disabled;
+            resourceInputs["pgSettings"] = args?.pgSettings;
+            resourceInputs["poolerEnabled"] = args?.poolerEnabled;
+            resourceInputs["poolerMode"] = args?.poolerMode;
+            resourceInputs["projectId"] = args?.projectId;
+            resourceInputs["regionId"] = args?.regionId;
+            resourceInputs["suspendTimeoutSeconds"] = args?.suspendTimeoutSeconds;
+            resourceInputs["type"] = args?.type;
             resourceInputs["host"] = undefined /*out*/;
+            resourceInputs["proxyHost"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Endpoint.__pulumiType, name, resourceInputs, opts, false /*dependency*/, utilities.getPackage());
@@ -112,36 +139,51 @@ export class Endpoint extends pulumi.CustomResource {
  * Input properties used for looking up and filtering Endpoint resources.
  */
 export interface EndpointState {
+    autoscalingLimitMaxCu?: pulumi.Input<number>;
+    autoscalingLimitMinCu?: pulumi.Input<number>;
     /**
-     * Branch the endpoint belongs to.
+     * Branch ID.
      */
     branchId?: pulumi.Input<string>;
     /**
-     * Provisioner of the endpoint.
+     * Provisioner The Neon compute provisioner. Specify the k8s-neonvm provisioner to create a compute endpoint that supports
+     * Autoscaling.
      */
     computeProvisioner?: pulumi.Input<string>;
     /**
-     * Host of the endpoint.
+     * Disable the endpoint.
+     */
+    disabled?: pulumi.Input<boolean>;
+    /**
+     * Endpoint URI.
      */
     host?: pulumi.Input<string>;
+    pgSettings?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
-     * Maximum number of compute units for the endpoint. **Default** `0.25`.
+     * Activate connection pooling. See details: https://neon.tech/docs/connect/connection-pooling
      */
-    maxCu?: pulumi.Input<number>;
+    poolerEnabled?: pulumi.Input<boolean>;
     /**
-     * Minimum number of compute units for the endpoint. **Default** `0.25`.
+     * Mode of connections pooling. See details: https://neon.tech/docs/connect/connection-pooling
      */
-    minCu?: pulumi.Input<number>;
+    poolerMode?: pulumi.Input<string>;
     /**
-     * Project the endpoint belongs to.
+     * Project ID.
      */
     projectId?: pulumi.Input<string>;
+    proxyHost?: pulumi.Input<string>;
     /**
-     * Suspend timeout of the endpoint. **Default** `0`.
+     * Deployment region: https://neon.tech/docs/introduction/regions
      */
-    suspendTimeout?: pulumi.Input<number>;
+    regionId?: pulumi.Input<string>;
     /**
-     * Type of the endpoint.
+     * Duration of inactivity in seconds after which the compute endpoint is automatically suspended. The value 0 means use the
+     * global default. The value -1 means never suspend. The default value is 300 seconds (5 minutes). The maximum value is
+     * 604800 seconds (1 week)
+     */
+    suspendTimeoutSeconds?: pulumi.Input<number>;
+    /**
+     * Access type. **Note** that a single branch can have only one "read_write" endpoint.
      */
     type?: pulumi.Input<string>;
 }
@@ -150,28 +192,46 @@ export interface EndpointState {
  * The set of arguments for constructing a Endpoint resource.
  */
 export interface EndpointArgs {
+    autoscalingLimitMaxCu?: pulumi.Input<number>;
+    autoscalingLimitMinCu?: pulumi.Input<number>;
     /**
-     * Branch the endpoint belongs to.
+     * Branch ID.
      */
     branchId: pulumi.Input<string>;
     /**
-     * Maximum number of compute units for the endpoint. **Default** `0.25`.
+     * Provisioner The Neon compute provisioner. Specify the k8s-neonvm provisioner to create a compute endpoint that supports
+     * Autoscaling.
      */
-    maxCu?: pulumi.Input<number>;
+    computeProvisioner?: pulumi.Input<string>;
     /**
-     * Minimum number of compute units for the endpoint. **Default** `0.25`.
+     * Disable the endpoint.
      */
-    minCu?: pulumi.Input<number>;
+    disabled?: pulumi.Input<boolean>;
+    pgSettings?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
     /**
-     * Project the endpoint belongs to.
+     * Activate connection pooling. See details: https://neon.tech/docs/connect/connection-pooling
+     */
+    poolerEnabled?: pulumi.Input<boolean>;
+    /**
+     * Mode of connections pooling. See details: https://neon.tech/docs/connect/connection-pooling
+     */
+    poolerMode?: pulumi.Input<string>;
+    /**
+     * Project ID.
      */
     projectId: pulumi.Input<string>;
     /**
-     * Suspend timeout of the endpoint. **Default** `0`.
+     * Deployment region: https://neon.tech/docs/introduction/regions
      */
-    suspendTimeout?: pulumi.Input<number>;
+    regionId?: pulumi.Input<string>;
     /**
-     * Type of the endpoint. One of `read_write` or `read_only`.
+     * Duration of inactivity in seconds after which the compute endpoint is automatically suspended. The value 0 means use the
+     * global default. The value -1 means never suspend. The default value is 300 seconds (5 minutes). The maximum value is
+     * 604800 seconds (1 week)
+     */
+    suspendTimeoutSeconds?: pulumi.Input<number>;
+    /**
+     * Access type. **Note** that a single branch can have only one "read_write" endpoint.
      */
     type?: pulumi.Input<string>;
 }
